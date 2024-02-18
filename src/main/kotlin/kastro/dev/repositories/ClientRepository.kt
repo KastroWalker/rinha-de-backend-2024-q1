@@ -27,7 +27,7 @@ class ClientRepository {
         val result = query.executeQuery()
 
         if (result.next()) {
-            return Client(
+            return Client.restore(
                 id = result.getInt("id"),
                 name = result.getString("nome"),
                 limit = result.getInt("limite"),
