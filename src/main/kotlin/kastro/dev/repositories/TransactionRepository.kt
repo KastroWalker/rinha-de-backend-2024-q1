@@ -7,7 +7,7 @@ class TransactionRepository {
     fun createTransaction(transaction: Transaction): Int {
         val connection = Database.connection
 
-        val sql = "INSERT INTO transacoes (valor, tipo, descricao, realidada_em, cliente_id) VALUES (?, ?, ?, ?, ?)"
+        val sql = "INSERT INTO transacoes (valor, tipo, descricao, realizada_em, cliente_id) VALUES (?, ?, ?, ?, ?)"
         val query = connection.prepareStatement(sql, arrayOf("id"))
 
         query.setLong(1, transaction.value)
