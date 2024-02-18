@@ -2,6 +2,9 @@ package kastro.dev.repositories
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import assertk.assertions.isInstanceOf
+import kastro.dev.exceptions.ResourceNotFoundException
+import org.junit.Assert.assertThrows
 import java.security.SecureRandom
 import kotlin.test.Test
 
@@ -18,6 +21,26 @@ class ClientRepositoryTest {
         val newBalanceFromDatabase = getBalanceByClientId(clientId)
 
         assertThat(newBalanceFromDatabase).isEqualTo(newBalance)
+    }
+
+    @Test
+    fun `should get a client by id`() {
+        val clientId = 1
+
+        val client = sut.getById(clientId)
+
+        assertThat(client.id).isEqualTo(clientId)
+    }
+
+    @Test
+    fun `should throw ResourceNotFoundException when the client does not exist`() {
+        val clientId = 6
+
+        val exception = assertThrows(ResourceNotFoundException::class.java) {
+            sut.getById(clientId)
+        }
+
+        assertThat(exception.statusCode).isEqualTo(404)
     }
 
     private fun getBalanceByClientId(id: Int): Int {
