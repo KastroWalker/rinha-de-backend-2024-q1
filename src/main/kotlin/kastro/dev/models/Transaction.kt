@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 data class Transaction(
     val id: Int? = null,
-    val value: Int,
+    val value: Long,
     val type: String,
     val description: String,
     val clientId: Int,

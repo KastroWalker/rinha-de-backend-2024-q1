@@ -1,3 +1,5 @@
 package kastro.dev.exceptions
 
-class ResourceNotFoundException: ApplicationException(statusCode = 404)
+import io.ktor.http.*
+
+class ResourceNotFoundException: ApplicationException(statusCode = HttpStatusCode.NotFound)

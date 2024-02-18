@@ -3,6 +3,7 @@ package kastro.dev.repositories
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import io.ktor.http.*
 import kastro.dev.exceptions.ResourceNotFoundException
 import org.junit.Assert.assertThrows
 import java.security.SecureRandom
@@ -14,7 +15,7 @@ class ClientRepositoryTest {
     @Test
     fun `should update the balance of a client`() {
         val clientId = 1
-        val newBalance = SecureRandom().nextInt(1000)
+        val newBalance = SecureRandom().nextLong(1000)
 
         sut.updateBalance(clientId, newBalance)
 
@@ -40,7 +41,7 @@ class ClientRepositoryTest {
             sut.getById(clientId)
         }
 
-        assertThat(exception.statusCode).isEqualTo(404)
+        assertThat(exception.statusCode).isEqualTo(HttpStatusCode.NotFound)
     }
 
     private fun getBalanceByClientId(id: Int): Int {

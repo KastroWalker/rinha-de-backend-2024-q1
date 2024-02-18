@@ -10,7 +10,7 @@ class TransactionRepository {
         val sql = "INSERT INTO transacoes (valor, tipo, descricao, realidada_em, cliente_id) VALUES (?, ?, ?, ?, ?)"
         val query = connection.prepareStatement(sql, arrayOf("id"))
 
-        query.setInt(1, transaction.value)
+        query.setLong(1, transaction.value)
         query.setString(2, transaction.type)
         query.setString(3, transaction.description)
         query.setTimestamp(4, java.sql.Timestamp.valueOf(LocalDateTime.now()))

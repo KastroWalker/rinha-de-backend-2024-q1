@@ -18,7 +18,7 @@ class CreateTransactionUseCase {
 
         val newBalance = client.withDraw(transactionInput.value)
 
-        if (transactionInput.type == "d" && newBalance > client.limit) throw InvalidArgumentException()
+        if (transactionInput.type == "d" && -newBalance > client.limit) throw InvalidArgumentException()
 
         // TODO if throw an exception when save the transaction or the balance should revert the two actions
 

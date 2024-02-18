@@ -1,3 +1,5 @@
 package kastro.dev.exceptions
 
-class InvalidArgumentException : ApplicationException(statusCode = 422)
+import io.ktor.http.*
+
+class InvalidArgumentException : ApplicationException(statusCode = HttpStatusCode.UnprocessableEntity)

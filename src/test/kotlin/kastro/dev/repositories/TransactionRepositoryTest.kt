@@ -42,7 +42,7 @@ class TransactionRepositoryTest {
 
         val transaction = Transaction(
             id = result.getInt("id"),
-            value = result.getInt("valor"),
+            value = result.getLong("valor"),
             type = result.getString("tipo"),
             description = result.getString("descricao"),
             clientId = result.getInt("cliente_id")
