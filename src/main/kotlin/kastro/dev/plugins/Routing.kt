@@ -24,11 +24,12 @@ fun Application.configureRouting() {
             try {
                 val clientId = call.parameters["id"] ?: throw InvalidArgumentException()
                 val transaction = call.receive<TransactionRequest>()
+                transaction.validate()
                 val input = CreateTransactionInput(
                     clientId = clientId.toInt(),
-                    value = transaction.value,
-                    type = transaction.type,
-                    description = transaction.description
+                    value = transaction.value!!.toLong(),
+                    type = transaction.type!!,
+                    description = transaction.description!!
                 )
                 val output = createTransactionUseCase.execute(input)
                 val response = TransactionResponse(
