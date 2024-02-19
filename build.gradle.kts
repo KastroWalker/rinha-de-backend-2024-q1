@@ -7,6 +7,7 @@ plugins {
     kotlin("jvm") version "1.9.22"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
     id("io.ktor.plugin") version "2.3.8"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "kastro.dev"
@@ -33,4 +34,10 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     testImplementation("com.willowtreeapps.assertk:assertk:0.28.0")
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "kastro.dev.ApplicationKt"
+    }
 }
