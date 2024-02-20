@@ -19,7 +19,7 @@ import kotlin.test.*
 
 class ApplicationTest {
     @Test
-    fun `should create a credit transaction`() = testApplication {
+    fun `should return 200 when create a credit transaction`() = testApplication {
         restoreDatabase()
         application {
             configureRouting()
@@ -57,7 +57,7 @@ class ApplicationTest {
     }
 
     @Test
-    fun `should create a debit transaction`() = testApplication {
+    fun `should return 200 when create a debit transaction`() = testApplication {
         restoreDatabase()
         application {
             configureRouting()
