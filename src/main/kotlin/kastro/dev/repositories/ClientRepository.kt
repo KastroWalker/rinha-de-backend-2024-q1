@@ -4,18 +4,6 @@ import kastro.dev.exceptions.ResourceNotFoundException
 import kastro.dev.models.Client
 
 class ClientRepository {
-    fun updateBalance(clientId: Int, newBalance: Long) {
-        val connection = Database.connection
-
-        val sql = "UPDATE clientes SET saldo = ? WHERE id = ?"
-        val query = connection.prepareStatement(sql)
-
-        query.setLong(1, newBalance)
-        query.setInt(2, clientId)
-
-        query.executeUpdate()
-    }
-
     fun getById(id: Int): Client {
         val connection = Database.connection
 
