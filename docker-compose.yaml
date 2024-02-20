@@ -12,8 +12,6 @@ services:
       - postgresql_db
     environment:
       - DATABASE_URL=jdbc:postgresql://postgresql_db:5432/transactiondb
-    networks:
-      - app_network
     deploy:
       resources:
         limits:
@@ -37,8 +35,6 @@ services:
     depends_on:
       - api01
       - api02
-    networks:
-      - app_network
     deploy:
       resources:
         limits:
@@ -57,8 +53,6 @@ services:
       - POSTGRES_PASSWORD=postgres
     volumes:
       - ./script.sql:/docker-entrypoint-initdb.d/script.sql
-    networks:
-      - app_network
     deploy:
       resources:
         limits:
@@ -66,5 +60,6 @@ services:
           memory: "90MB"
 
 networks:
-  app_network:
+  default:
     driver: bridge
+    name: rinha-network
