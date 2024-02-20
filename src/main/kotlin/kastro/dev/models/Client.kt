@@ -15,6 +15,11 @@ class Client private constructor(
         return balance
     }
 
+    fun deposit(value: Long): Long {
+        balance += value
+        return balance
+    }
+
     companion object {
         fun restore(
             id: Int,

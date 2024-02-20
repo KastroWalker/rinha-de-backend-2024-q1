@@ -15,11 +15,18 @@ class CreateTransactionUseCase {
         val client = clientRepository.getById(transactionInput.clientId)
 
         if (transactionInput.value < 0) throw InvalidArgumentException()
+        val newBalance: Long
 
-        val newBalance = client.withDraw(transactionInput.value)
+        if (transactionInput.type == "d") {
+            newBalance = client.withDraw(transactionInput.value)
 
-        if (transactionInput.type == "d" && -newBalance > client.limit) throw InvalidArgumentException()
+            if (-newBalance > client.limit) throw InvalidArgumentException()
+        } else {
+            newBalance = client.deposit(transactionInput.value)
+        }
 
+//        if (transactionInput.type == "d" && -newBalance > client.limit) throw InvalidArgumentException()
+//
         // TODO if throw an exception when save the transaction or the balance should revert the two actions
 
         val newTransaction = Transaction(
