@@ -35,7 +35,7 @@ class ApplicationTest {
             contentType(ContentType.Application.Json)
             setBody(
                 TransactionRequest(
-                    value = 3.0,
+                    value = 100003.0,
                     type = "c",
                     description = "desc"
                 )
@@ -44,13 +44,13 @@ class ApplicationTest {
         assertThat(response.status).isEqualTo(HttpStatusCode.OK)
         val bodyObject = Json.decodeFromString<TransactionResponse>(response.bodyAsText())
         assertThat(bodyObject.limit).isEqualTo(100000)
-        assertThat(bodyObject.balance).isEqualTo(3)
+        assertThat(bodyObject.balance).isEqualTo(100003)
 
         val transactionStored = getTransactionByClientId(clientId)
 
         assertThat(transactionStored.id).isEqualTo(1)
         assertThat(transactionStored.type).isEqualTo("c")
-        assertThat(transactionStored.value).isEqualTo(3)
+        assertThat(transactionStored.value).isEqualTo(100003)
         assertThat(transactionStored.clientId).isEqualTo(clientId)
         assertThat(transactionStored.description).isEqualTo("desc")
         assertThat(transactionStored.realizedAt.toLocalDate()).isEqualTo(LocalDateTime.now().toLocalDate())
