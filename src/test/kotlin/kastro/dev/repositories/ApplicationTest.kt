@@ -56,6 +56,44 @@ class ApplicationTest {
         assertThat(transactionStored.realizedAt.toLocalDate()).isEqualTo(LocalDateTime.now().toLocalDate())
     }
 
+    @Test
+    fun `should create a debit transaction`() = testApplication {
+        restoreDatabase()
+        application {
+            configureRouting()
+            configureSerialization()
+        }
+        val clientId = 1
+        val client = createClient {
+                install(ContentNegotiation) {
+                    json()
+                }
+            }
+        val response = client.post("/clientes/$clientId/transacoes") {
+            contentType(ContentType.Application.Json)
+            setBody(
+                TransactionRequest(
+                    value = 3.0,
+                    type = "d",
+                    description = "desc"
+                )
+            )
+        }
+        assertThat(response.status).isEqualTo(HttpStatusCode.OK)
+        val bodyObject = Json.decodeFromString<TransactionResponse>(response.bodyAsText())
+        assertThat(bodyObject.limit).isEqualTo(100000)
+        assertThat(bodyObject.balance).isEqualTo(-3)
+
+        val transactionStored = getTransactionByClientId(clientId)
+
+        assertThat(transactionStored.id).isEqualTo(1)
+        assertThat(transactionStored.type).isEqualTo("d")
+        assertThat(transactionStored.value).isEqualTo(3)
+        assertThat(transactionStored.clientId).isEqualTo(clientId)
+        assertThat(transactionStored.description).isEqualTo("desc")
+        assertThat(transactionStored.realizedAt.toLocalDate()).isEqualTo(LocalDateTime.now().toLocalDate())
+    }
+
     private fun getTransactionByClientId(clientId: Int): Transaction {
         val connection = Database.connection
 
