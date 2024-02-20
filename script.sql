@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS transacoes(
 	valor INT NOT NULL,
 	tipo VARCHAR NOT NULL,
 	descricao VARCHAR NOT NULL,
-	realizada_em TIME NOT NULL,
+	realizada_em TIMESTAMP NOT NULL,
 	cliente_id INT NOT NULL,
 	FOREIGN KEY(cliente_id) REFERENCES clientes(id)
 );

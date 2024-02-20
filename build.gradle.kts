@@ -34,6 +34,7 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     testImplementation("com.willowtreeapps.assertk:assertk:0.28.0")
+    testImplementation("io.ktor:ktor-client-content-negotiation-jvm")
 }
 
 tasks.withType<Jar> {
