@@ -94,6 +94,50 @@ class ApplicationTest {
         assertThat(transactionStored.realizedAt.toLocalDate()).isEqualTo(LocalDateTime.now().toLocalDate())
     }
 
+    @Test
+    fun `should return 422 when debit transaction value is greater than limit`() = testApplication {
+        restoreDatabase()
+        application {
+            configureRouting()
+            configureSerialization()
+        }
+        val clientId = 2
+        val client = createClient {
+                install(ContentNegotiation) {
+                    json()
+                }
+            }
+        val response = client.post("/clientes/$clientId/transacoes") {
+            contentType(ContentType.Application.Json)
+            setBody(
+                TransactionRequest(
+                    value = 80001.0,
+                    type = "d",
+                    description = "desc"
+                )
+            )
+        }
+        assertThat(response.status).isEqualTo(HttpStatusCode.UnprocessableEntity)
+        assertThat(countTransactionsByClientId(clientId)).isEqualTo(0)
+    }
+
+    private fun countTransactionsByClientId(clientId: Int): Int {
+        val connection = Database.connection
+
+        val sql = "SELECT COUNT(*)::INT as quantidade FROM transacoes WHERE id = ?"
+        val query = connection.prepareStatement(sql)
+
+        query.setInt(1, clientId)
+
+        val result = query.executeQuery()
+
+        result.next()
+
+        val count = result.getInt("quantidade")
+
+        return count
+    }
+
     private fun getTransactionByClientId(clientId: Int): Transaction {
         val connection = Database.connection
 
