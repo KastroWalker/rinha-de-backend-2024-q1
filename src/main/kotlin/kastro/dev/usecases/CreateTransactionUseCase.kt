@@ -36,8 +36,7 @@ class CreateTransactionUseCase {
             clientId = transactionInput.clientId,
         )
 
-        transactionRepository.createTransaction(newTransaction)
-        clientRepository.updateBalance(clientId = client.id, newBalance = newBalance)
+        transactionRepository.createTransactionAndUpdateClientBalance(transaction =  newTransaction, newBalance = newBalance)
 
         return CreateTransactionOutput(
             limit = client.limit,
