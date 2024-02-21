@@ -16,12 +16,10 @@ import kastro.dev.usecases.inputs.CreateTransactionInput
 val createTransactionUseCase = CreateTransactionUseCase()
 val statementRepository = StatementRepository()
 
-// TODO : Implement integration test for this route
-
 fun Application.configureRouting() {
     routing {
         post("/clientes/{id}/transacoes") {
-            try {
+           try {
                 val clientId = call.parameters["id"] ?: throw InvalidArgumentException()
                 val transaction = call.receive<TransactionRequest>()
                 transaction.validate()
@@ -37,11 +35,11 @@ fun Application.configureRouting() {
                     balance = output.balance
                 )
                 call.respond(HttpStatusCode.OK, response)
-            } catch (e: ApplicationException) {
-                call.respond(e.statusCode)
-            } catch (e: Exception) {
-                call.respond(HttpStatusCode.InternalServerError)
-            }
+           } catch (e: ApplicationException) {
+               call.respond(e.statusCode)
+           } catch (e: Exception) {
+               call.respond(HttpStatusCode.InternalServerError)
+           }
         }
         get("/clientes/{id}/extrato") {
             try {

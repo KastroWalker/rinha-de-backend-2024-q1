@@ -1,10 +1,22 @@
 package kastro.dev.repositories
 
+import com.zaxxer.hikari.HikariConfig
+import com.zaxxer.hikari.HikariDataSource
 import java.sql.Connection
-import java.sql.DriverManager
 
 object Database {
-    // TODO : Get data from env
-    val connection: Connection = DriverManager.getConnection(System.getenv("DATABASE_URL"), "postgres", "postgres")
-//    val connection: Connection = DriverManager.getConnection("jdbc:postgresql://0.0.0.0:5433/transactiondb", "postgres", "postgres")
+    private val hikariDataSource: HikariDataSource
+
+    init {
+        val config = HikariConfig()
+        config.jdbcUrl = System.getenv("DATABASE_URL")
+        config.username = "postgres"
+        config.password = "postgres"
+        config.maximumPoolSize = 5
+
+        hikariDataSource = HikariDataSource(config)
+    }
+
+    val connection: Connection
+        get() = hikariDataSource.connection
 }

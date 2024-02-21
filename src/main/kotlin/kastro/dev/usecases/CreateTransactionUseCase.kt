@@ -25,10 +25,6 @@ class CreateTransactionUseCase {
             newBalance = client.deposit(transactionInput.value)
         }
 
-//        if (transactionInput.type == "d" && -newBalance > client.limit) throw InvalidArgumentException()
-//
-        // TODO if throw an exception when save the transaction or the balance should revert the two actions
-
         val newTransaction = Transaction(
             value = transactionInput.value,
             type = transactionInput.type,

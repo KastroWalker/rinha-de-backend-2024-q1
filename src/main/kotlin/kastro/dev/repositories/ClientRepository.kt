@@ -7,22 +7,26 @@ class ClientRepository {
     fun getById(id: Int): Client {
         val connection = Database.connection
 
-        val sql = "SELECT * FROM clientes WHERE id = ?"
-        val query = connection.prepareStatement(sql)
+        try {
+            val sql = "SELECT * FROM clientes WHERE id = ?"
+            val query = connection.prepareStatement(sql)
 
-        query.setInt(1, id)
+            query.setInt(1, id)
 
-        val result = query.executeQuery()
+            val result = query.executeQuery()
 
-        if (result.next()) {
-            return Client.restore(
-                id = result.getInt("id"),
-                name = result.getString("nome"),
-                limit = result.getLong("limite"),
-                balance = result.getLong("saldo")
-            )
+            if (result.next()) {
+                return Client.restore(
+                    id = result.getInt("id"),
+                    name = result.getString("nome"),
+                    limit = result.getLong("limite"),
+                    balance = result.getLong("saldo")
+                )
+            }
+
+            throw ResourceNotFoundException()
+        } finally {
+            connection.close()
         }
-
-        throw ResourceNotFoundException()
     }
 }
